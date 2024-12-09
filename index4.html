@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .question-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grammar Quiz</h1>
+        
+        <div class="question-box" id="present-simple-box">
+            <h2>Present Simple</h2>
+            <p id="present-simple-question">Question will appear here</p>
+            <input type="text" id="present-simple-answer" placeholder="Type your answer here">
+            <button onclick="validateAnswer('Present Simple')">Validate</button>
+            <p id="present-simple-feedback"></p>
+        </div>
+
+        <div class="question-box" id="present-continuous-box">
+            <h2>Present Continuous</h2>
+            <p id="present-continuous-question">Question will appear here</p>
+            <input type="text" id="present-continuous-answer" placeholder="Type your answer here">
+            <button onclick="validateAnswer('Present Continuous')">Validate</button>
+            <p id="present-continuous-feedback"></p>
+        </div>
+
+        <div class="question-box" id="past-simple-box">
+            <h2>Past Simple</h2>
+            <p id="past-simple-question">Question will appear here</p>
+            <input type="text" id="past-simple-answer" placeholder="Type your answer here">
+            <button onclick="validateAnswer('Past Simple')">Validate</button>
+            <p id="past-simple-feedback"></p>
+        </div>
+    </div>
+
+    <script>
+        const questions = {
+            "Present Simple": [
+                { ro: "Eu merg la școală.", en: "I go to school." },
+                { ro: "Tu scrii o scrisoare.", en: "You write a letter." },
+                { ro: "El citește o carte.", en: "He reads a book." },
+                // Adaugă restul propozițiilor...
+            ],
+            "Present Continuous": [
+                { ro: "Eu scriu un email acum.", en: "I am writing an email now." },
+                { ro: "El citește o carte acum.", en: "He is reading a book now." },
+                { ro: "Noi ascultăm muzică acum.", en: "We are listening to music now." },
+                // Adaugă restul propozițiilor...
+            ],
+            "Past Simple": [
+                { ro: "Eu am mâncat o pizza.", en: "I ate a pizza." },
+                { ro: "El a mers la școală.", en: "He went to school." },
+                { ro: "Noi am jucat fotbal.", en: "We played football." },
+                // Adaugă restul propozițiilor...
+            ],
+        };
+
+        const currentIndex = {
+            "Present Simple": 0,
+            "Present Continuous": 0,
+            "Past Simple": 0,
+        };
+
+        function showQuestion(category) {
+            const question = questions[category][currentIndex[category]];
+            document.getElementById(`${category.toLowerCase().replace(" ", "-")}-question`).textContent = question.ro;
+            document.getElementById(`${category.toLowerCase().replace(" ", "-")}-answer`).value = "";
+            document.getElementById(`${category.toLowerCase().replace(" ", "-")}-feedback`).textContent = "";
+        }
+
+        function validateAnswer(category) {
+            const question = questions[category][currentIndex[category]];
+            const userAnswer = document.getElementById(`${category.toLowerCase().replace(" ", "-")}-answer`).value.trim().toLowerCase();
+            const correctAnswer = question.en.toLowerCase();
+            const feedbackElement = document.getElementById(`${category.toLowerCase().replace(" ", "-")}-feedback`);
+
+            if (userAnswer === correctAnswer) {
+                feedbackElement.textContent = "Correct! 🎉";
+                feedbackElement.style.color = "green";
+            } else {
+                feedbackElement.textContent = `Incorrect! The correct answer is: "${question.en}".`;
+                feedbackElement.style.color = "red";
+            }
+
+            setTimeout(() => {
+                currentIndex[category]++;
+                if (currentIndex[category] >= questions[category].length) {
+                    feedbackElement.textContent = "You have completed this category!";
+                    return;
+                }
+                showQuestion(category);
+            }, 2000);
+        }
+
+        // Initialize the questions
+        showQuestion("Present Simple");
+        showQuestion("Present Continuous");
+        showQuestion("Past Simple");
+    </script>
+</body>
+</html>
